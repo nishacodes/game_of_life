@@ -1,16 +1,16 @@
-# require 'awesome_print'
-
 class Board
   attr_accessor :grid
 
 	def initialize(width, height)
+    @width = width
+    @height = height
     @grid = []
     height.times do |i|  # creates an array for each row
       grid << Array.new
     end
     grid.each do |array|
       width.times do |i|
-        array[i] = "."
+        array[i] = Cell.new
       end
     end
 	end
@@ -23,6 +23,4 @@ class Board
   end
 end
 
-board = Board.new(100, 30)
-board.display
 
