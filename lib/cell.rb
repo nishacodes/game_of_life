@@ -2,7 +2,7 @@
 class Cell
   attr_accessor :state, :x, :y, :neighbors, :world
 
-  ALL = []
+  ALL = [] # only used when assigning each cell to the same instance of Board
 
   def initialize
     @state = dead
@@ -19,14 +19,6 @@ class Cell
 
   def alive
     return "o"
-  end
-
-  # def board=(board)
-  #   @board = board
-  # end
-
-  def show_coordinates
-    # puts [@y,@x]
   end
 
   def left_edge?
@@ -56,13 +48,35 @@ class Cell
     @neighbors << world.grid[y+1][x+1] unless (bottom_edge? || right_edge?) # southeast
     @neighbors
   end
-    
-  
-  # def self.all
-  #   @@all
-  # end
 
-  # def self.count
-  #   @@all.count
-  # end
+  def evaluate_neighbors
+    get_neighbors
+    
+    neighbor_states = @neighbors.collect do |object|
+      object.state
+    end  
+
+    case state
+      when alive
+        # 2 or 3 live neighbors
+        if neighbor_states.count(alive) == 2 || neighbor_states.count("o") == 3
+          world.to_live << self 
+        else
+          # any other amount will be less than 2 or more than 3
+          world.to_die << self 
+        end      
+      when dead
+        if neighbor_states.count(alive) == 3 
+          world.to_live << self 
+        else
+          world.to_die << self
+        end
+    end  
+
+    # world.to_die << self if neighbor_states.count("o") < 2
+    # if neighbor_states.count("o") == 2 || neighbor_states.count("o") == 3
+    #   world.to_live << self 
+    # end  
+  end
+    
 end

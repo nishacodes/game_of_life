@@ -1,6 +1,10 @@
 require "../lib/board"
 require "../lib/cell"
 
+# TO DO
+# - refactor to repeat less code (i.e. don't recreate board every test)
+
+
 describe "Board" do
   
   # INITIALIZE
@@ -28,6 +32,17 @@ describe "Board" do
     expect(board.grid[4][4].state).to eq("o") 
     expect(board.grid[4][3].state).to eq("o") 
     expect(board.grid[4][5].state).to eq("o") 
+  end
+
+  it "should create 3 live cells in a row for toad" do
+    board = Board.new(10,10)
+    board.create_toad(6,5)
+    expect(board.grid[6][5].state).to eq("o") 
+    expect(board.grid[6][6].state).to eq("o") 
+    expect(board.grid[6][7].state).to eq("o") 
+    expect(board.grid[5][6].state).to eq("o") 
+    expect(board.grid[5][7].state).to eq("o") 
+    expect(board.grid[5][8].state).to eq("o") 
   end
 
   it "should create 3 live cells in a row for toad" do
@@ -98,9 +113,16 @@ describe "Cell" do
     expect(board.grid[5][5].get_neighbors.collect {|object| object.state}).should_not include("o")
   end
 
-  # COUNT_DEAD_NEIGHBORS
-  it "a cell at [9,9] will have the following neighbors" do
-   
+  # EVALUATE NEIGHBORS
+  it "should put 3 cells into the to_live array when there is only 1 blinker on the board" do
+    board = Board.new(10,10)
+    Cell::ALL.each do |object|
+      object.world = board
+    end
+    board.create_blinker(4,4)
+    board.evaluate_cells
+    (board.to_live.count).should eq(3)
+    (board.to_die.count).should eq(97)
   end
   
 end

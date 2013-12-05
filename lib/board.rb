@@ -1,5 +1,5 @@
 class Board
-  attr_accessor :grid, :width, :height
+  attr_accessor :grid, :width, :height, :to_die, :to_live
 
 	def initialize(width, height)
     @width = width
@@ -14,6 +14,8 @@ class Board
       end
     end
     assign_coordinates
+    @to_die = []
+    @to_live = []
 	end
 
   def display
@@ -34,20 +36,44 @@ class Board
     end
   end
 
-  def create_blinker(y,x) # starting point
-    grid[y][x].state = "o"
-    grid[y][x-1].state = "o"
-    grid[y][x+1].state = "o"
+  def create_blinker(y,x) # starting point coordinates
+    grid[y][x].tap {|object| object.state = "o"}
+    grid[y][x-1].tap {|object| object.state = "o"}
+    grid[y][x+1].tap {|object| object.state = "o"}  
   end
 
-  def create_toad(y,x) # starting point
-    grid[y][x].state = "o"
-    grid[y][x+1].state = "o"
-    grid[y][x+2].state = "o"
-    grid[y-1][x+1].state = "o"
-    grid[y-1][x+2].state = "o"
-    grid[y-1][x+3].state = "o"
+  def create_toad(y,x) # starting point coordinates
+    grid[y][x].tap {|object| object.state = "o"}
+    grid[y][x+1].tap {|object| object.state = "o"}
+    grid[y][x+2].tap {|object| object.state = "o"}
+    grid[y-1][x+1].tap {|object| object.state = "o"}
+    grid[y-1][x+2].tap {|object| object.state = "o"}
+    grid[y-1][x+3].tap {|object| object.state = "o"}
   end
+
+  def evaluate_cells
+    grid.each do |array|
+      array.each do |object|
+        object.evaluate_neighbors
+      end
+    end
+
+  end
+
+
+  # def count_neighbors
+  #   to_die
+  #   to_live
+  # end
+
+  # def to_die
+
+  # end
+
+  # def to_live
+  #   @to_die = []
+  # end
+
 end
 
 
