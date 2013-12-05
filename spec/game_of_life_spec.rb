@@ -22,12 +22,23 @@ describe "Board" do
   end
 
   # CREATE INITIAL PATTERNS
-  it "should create 3 live cells in a row" do
+  it "should create 3 live cells in a row for blinker" do
     board = Board.new(10,10)
     board.create_blinker(4,4)
     expect(board.grid[4][4].state).to eq("o") 
     expect(board.grid[4][3].state).to eq("o") 
     expect(board.grid[4][5].state).to eq("o") 
+  end
+
+  it "should create 3 live cells in a row for toad" do
+    board = Board.new(10,10)
+    board.create_toad(6,5)
+    expect(board.grid[6][5].state).to eq("o") 
+    expect(board.grid[6][6].state).to eq("o") 
+    expect(board.grid[6][7].state).to eq("o") 
+    expect(board.grid[5][6].state).to eq("o") 
+    expect(board.grid[5][7].state).to eq("o") 
+    expect(board.grid[5][8].state).to eq("o") 
   end
 end
 

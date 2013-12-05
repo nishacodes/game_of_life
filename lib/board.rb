@@ -40,10 +40,13 @@ class Board
     grid[y][x+1].state = "o"
   end
 
-   def create_toad(y,x) # starting point
+  def create_toad(y,x) # starting point
     grid[y][x].state = "o"
-    grid[y][x-1].state = "o"
     grid[y][x+1].state = "o"
+    grid[y][x+2].state = "o"
+    grid[y-1][x+1].state = "o"
+    grid[y-1][x+2].state = "o"
+    grid[y-1][x+3].state = "o"
   end
 end
 
