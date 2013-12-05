@@ -33,19 +33,23 @@ describe Cell, "#allmethods" do
 
   it "should have all cells belong to the same world" do
     board = Board.new(10,10)
-    board.assign_coordinates
     board.grid[5][5]
     expect(board.grid[5][5].world = board.grid[6][6] = board).to be_true
   end
 
   # GET NEIGHBORS
-  it "should have 8 neighbors for each cell" do
+  # it "cells have 8 neighbors unless they lie on the edge" do
+  #   board = Board.new(10,10)
+  #   Cell::ALL.each do |object|
+  #     object.world = board
+  #   end
+  #   expect(board.grid[9][9].get_neighbors.count).to eq(8)
+  # end
+
+  it "a cell at [9,9] will have the following neighbors" do
     board = Board.new(10,10)
-    board.assign_coordinates
-    Cell::ALL.each do |object|
-      object.world = board
-    end
-    expect(board.grid[5][5].get_neighbors.count).to eq(8)
+    board.grid[9][9].world = board
+    expect(board.grid[9][9].get_neighbors.collect {|object| [object.y, object.x]}).to eq([[9,8],[8,8],[8,9]])
   end
   
 end
