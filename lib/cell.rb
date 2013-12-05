@@ -59,7 +59,7 @@ class Cell
     case state
       when alive
         # 2 or 3 live neighbors
-        if neighbor_states.count(alive) == 2 || neighbor_states.count("o") == 3
+        if neighbor_states.count(alive) == 2 || neighbor_states.count(alive) == 3
           world.to_live << self 
         else
           # any other amount will be less than 2 or more than 3
@@ -72,11 +72,8 @@ class Cell
           world.to_die << self
         end
     end  
-
-    # world.to_die << self if neighbor_states.count("o") < 2
-    # if neighbor_states.count("o") == 2 || neighbor_states.count("o") == 3
-    #   world.to_live << self 
-    # end  
+    neighbor_states = []
+    @neighbors = []
   end
     
 end

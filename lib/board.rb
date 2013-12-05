@@ -1,3 +1,5 @@
+require 'debugger'
+
 class Board
   attr_accessor :grid, :width, :height, :to_die, :to_live
 
@@ -37,18 +39,18 @@ class Board
   end
 
   def create_blinker(y,x) # starting point coordinates
-    grid[y][x].tap {|object| object.state = "o"}
-    grid[y][x-1].tap {|object| object.state = "o"}
-    grid[y][x+1].tap {|object| object.state = "o"}  
+    grid[y][x].tap {|object| object.state = object.alive}
+    grid[y][x-1].tap {|object| object.state = object.alive}
+    grid[y][x+1].tap {|object| object.state = object.alive}  
   end
 
   def create_toad(y,x) # starting point coordinates
-    grid[y][x].tap {|object| object.state = "o"}
-    grid[y][x+1].tap {|object| object.state = "o"}
-    grid[y][x+2].tap {|object| object.state = "o"}
-    grid[y-1][x+1].tap {|object| object.state = "o"}
-    grid[y-1][x+2].tap {|object| object.state = "o"}
-    grid[y-1][x+3].tap {|object| object.state = "o"}
+    grid[y][x].tap {|object| object.state = object.alive}
+    grid[y][x+1].tap {|object| object.state = object.alive}
+    grid[y][x+2].tap {|object| object.state = object.alive}
+    grid[y-1][x+1].tap {|object| object.state = object.alive}
+    grid[y-1][x+2].tap {|object| object.state = object.alive}
+    grid[y-1][x+3].tap {|object| object.state = object.alive}
   end
 
   def evaluate_cells
@@ -57,22 +59,32 @@ class Board
         object.evaluate_neighbors
       end
     end
-
   end
 
+  def tick
+    to_die.each do |object|
+      object.state = object.dead
+    end
 
-  # def count_neighbors
-  #   to_die
-  #   to_live
-  # end
+    to_live.each do |object|
+      object.state = object.alive
+    end
+  end
 
-  # def to_die
+  def clear_stage
+    to_die.clear
+    to_live.clear
+  end
 
-  # end
-
-  # def to_live
-  #   @to_die = []
-  # end
+  def generation(number)
+    number.times do |i|
+      evaluate_cells
+      tick
+      clear_stage
+      display
+      sleep(0.5)
+    end
+  end
 
 end
 

@@ -3,7 +3,7 @@ require "../lib/cell"
 
 # TO DO
 # - refactor to repeat less code (i.e. don't recreate board every test)
-
+# - stub tests so they only test 1 method at a time
 
 describe "Board" do
   
@@ -55,6 +55,44 @@ describe "Board" do
     expect(board.grid[5][7].state).to eq("o") 
     expect(board.grid[5][8].state).to eq("o") 
   end
+
+  #TICK
+  it "should kill all the to_die cells and bring to life all the to_live cells" do 
+    board = Board.new(10,10)
+    Cell::ALL.each do |object|
+      object.world = board
+    end
+    board.create_toad(4,4)
+    board.evaluate_cells
+    board.tick
+    (board.to_live.collect {|object| object.state}).should_not include(".")
+  end
+
+  # CLEAR_STAGE
+  it "should kill all the to_die cells and bring to life all the to_live cells" do 
+    board = Board.new(10,10)
+    Cell::ALL.each do |object|
+      object.world = board
+    end
+    board.create_toad(4,4)
+    board.evaluate_cells
+    board.tick
+    board.clear_stage
+    (board.to_live.count).should eq(0)
+    (board.to_die.count).should eq(0)
+  end
+
+   # GENERATION
+  it "should keep cell [4,4] alive over generations as part of blinker" do
+    board = Board.new(10,10)
+    Cell::ALL.each do |object|
+      object.world = board
+    end
+    board.create_blinker(4,4)
+    board.generation(3)
+    (board.grid[4][4].state).should eq("o")
+  end
+
 end
 
 
@@ -135,4 +173,6 @@ describe "Cell" do
     (board.to_live.collect {|object| [object.y, object.x]}).should include([4,4],[3,4],[5,5],[4,7],[3,7],[2,6])
   end
   
+  #TICK
+
 end
