@@ -1,7 +1,7 @@
 require "../lib/board"
 require "../lib/cell"
 
-describe Board, "#allmethods" do
+describe "Board" do
   
   # INITIALIZE
   it "should create a board with 'height' arrays and 'width' elements" do 
@@ -24,7 +24,7 @@ describe Board, "#allmethods" do
 end
 
 
-describe Cell, "#allmethods" do
+describe "Cell" do
   
   # INITIALIZE
   it "should create a dead cell" do 
@@ -36,20 +36,52 @@ describe Cell, "#allmethods" do
     board.grid[5][5]
     expect(board.grid[5][5].world = board.grid[6][6] = board).to be_true
   end
+  
+  # EDGE METHODS
+  it "cell [0,0] should return true for left_edge and top_edge" do
+    board = Board.new(10,10)
+    Cell::ALL.each do |object|
+      object.world = board
+    end
+    expect(board.grid[0][0].left_edge? && board.grid[0][0].top_edge?).to eq(true)
+  end
+
+  it "cell [9,9] should return true for right_edge and bottom_edge" do
+    board = Board.new(10,10)
+    Cell::ALL.each do |object|
+      object.world = board
+    end
+    expect(board.grid[9][9].right_edge? && board.grid[9][9].bottom_edge?).to eq(true)
+  end
+
 
   # GET NEIGHBORS
-  # it "cells have 8 neighbors unless they lie on the edge" do
-  #   board = Board.new(10,10)
-  #   Cell::ALL.each do |object|
-  #     object.world = board
-  #   end
-  #   expect(board.grid[9][9].get_neighbors.count).to eq(8)
-  # end
+  it "cells have 8 neighbors unless they lie on the edge" do
+    board = Board.new(10,10)
+    Cell::ALL.each do |object|
+      object.world = board
+    end
+    expect(board.grid[5][5].get_neighbors.count).to eq(8)
+  end
 
   it "a cell at [9,9] will have the following neighbors" do
     board = Board.new(10,10)
     board.grid[9][9].world = board
     expect(board.grid[9][9].get_neighbors.collect {|object| [object.y, object.x]}).to eq([[9,8],[8,8],[8,9]])
+  end
+
+  # COUNT_LIVE_NEIGHBORS
+  it "a cell should have 0 live neighbors when board is new" do
+    board = Board.new(10,10)
+    Cell::ALL.each do |object|
+      object.world = board
+    end
+    expect(board.grid[5][5].get_neighbors.collect {|object| object.state}).should_not include("o")
+  end
+
+  # COUNT_DEAD_NEIGHBORS
+  it "a cell at [9,9] will have the following neighbors" do
+   
   end
   
 end

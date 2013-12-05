@@ -1,5 +1,5 @@
 class Board
-  attr_accessor :grid
+  attr_accessor :grid, :width, :height
 
 	def initialize(width, height)
     @width = width
@@ -13,11 +13,12 @@ class Board
         array[i] = Cell.new
       end
     end
+    assign_coordinates
 	end
 
   def display
     grid.each do |row|
-      row.each {|cell| print "#{cell}"}
+      row.each {|cell| print "#{cell.state}"}
       puts
     end
   end
@@ -28,16 +29,6 @@ class Board
         element.tap do |cell|
           cell.y = y_index
           cell.x = x_index
-        end
-      end
-    end
-  end
-
-  def get_neighbors
-     grid.each_with_index do |array, y_index|
-      array.each_with_index do |element, x_index|
-        element.tap do |cell|
-          cell.neighbors << grid[0][0]
         end
       end
     end
