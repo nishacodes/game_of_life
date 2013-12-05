@@ -2,7 +2,7 @@ require "./board"
 require "./cell"
 
 board = Board.new(4,4)
-board.display
+# board.display
 # board.assign_coordinates
 
 # # # assigns board to be the world for each cell

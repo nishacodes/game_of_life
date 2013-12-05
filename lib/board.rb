@@ -33,6 +33,18 @@ class Board
       end
     end
   end
+
+  def create_blinker(y,x) # starting point
+    grid[y][x].state = "o"
+    grid[y][x-1].state = "o"
+    grid[y][x+1].state = "o"
+  end
+
+   def create_toad(y,x) # starting point
+    grid[y][x].state = "o"
+    grid[y][x-1].state = "o"
+    grid[y][x+1].state = "o"
+  end
 end
 
 

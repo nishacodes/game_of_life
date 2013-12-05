@@ -18,8 +18,16 @@ describe "Board" do
   # ASSIGN COORDINATES
   it "should assign x and y coordinates to each object, based on its position" do
     board = Board.new(10,10)
-    board.assign_coordinates
     expect(board.grid[3][5].y).to eq(3) 
+  end
+
+  # CREATE INITIAL PATTERNS
+  it "should create 3 live cells in a row" do
+    board = Board.new(10,10)
+    board.create_blinker(4,4)
+    expect(board.grid[4][4].state).to eq("o") 
+    expect(board.grid[4][3].state).to eq("o") 
+    expect(board.grid[4][5].state).to eq("o") 
   end
 end
 
