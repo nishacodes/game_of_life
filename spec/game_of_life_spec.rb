@@ -101,7 +101,7 @@ describe "Cell" do
   it "a cell at [9,9] will have the following neighbors" do
     board = Board.new(10,10)
     board.grid[9][9].world = board
-    expect(board.grid[9][9].get_neighbors.collect {|object| [object.y, object.x]}).to eq([[9,8],[8,8],[8,9]])
+    expect(board.grid[9][9].get_neighbors.collect {|object| [object.y, object.x]}).to include([9,8],[8,8],[8,9])
   end
 
   # COUNT_LIVE_NEIGHBORS
@@ -123,6 +123,16 @@ describe "Cell" do
     board.evaluate_cells
     (board.to_live.count).should eq(3)
     (board.to_die.count).should eq(97)
+  end
+
+  it "it should put the right cells into to_live given a world with a toad pattern" do
+    board = Board.new(10,10)
+    Cell::ALL.each do |object|
+      object.world = board
+    end
+    board.create_toad(4,4)
+    board.evaluate_cells
+    (board.to_live.collect {|object| [object.y, object.x]}).should include([4,4],[3,4],[5,5],[4,7],[3,7],[2,6])
   end
   
 end
