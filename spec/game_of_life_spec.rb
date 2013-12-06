@@ -60,7 +60,7 @@ describe "Board" do
   it "should kill all the to_die cells and bring to life all the to_live cells" do 
     board = Board.new(10,10)
     Cell::ALL.each do |object|
-      object.world = board
+      object.board = board
     end
     board.create_toad(4,4)
     board.evaluate_cells
@@ -72,7 +72,7 @@ describe "Board" do
   it "should kill all the to_die cells and bring to life all the to_live cells" do 
     board = Board.new(10,10)
     Cell::ALL.each do |object|
-      object.world = board
+      object.board = board
     end
     board.create_toad(4,4)
     board.evaluate_cells
@@ -86,7 +86,7 @@ describe "Board" do
   it "should keep cell [4,4] alive over generations as part of blinker" do
     board = Board.new(10,10)
     Cell::ALL.each do |object|
-      object.world = board
+      object.board = board
     end
     board.create_blinker(4,4)
     board.generation(3)
@@ -103,17 +103,17 @@ describe "Cell" do
     expect(Cell.new.state).to eq(".") 
   end
 
-  it "should have all cells belong to the same world" do
+  it "should have all cells belong to the same board" do
     board = Board.new(10,10)
     board.grid[5][5]
-    expect(board.grid[5][5].world = board.grid[6][6] = board).to be_true
+    expect(board.grid[5][5].board = board.grid[6][6] = board).to be_true
   end
   
   # EDGE METHODS
   it "cell [0,0] should return true for left_edge and top_edge" do
     board = Board.new(10,10)
     Cell::ALL.each do |object|
-      object.world = board
+      object.board = board
     end
     expect(board.grid[0][0].left_edge? && board.grid[0][0].top_edge?).to eq(true)
   end
@@ -121,7 +121,7 @@ describe "Cell" do
   it "cell [9,9] should return true for right_edge and bottom_edge" do
     board = Board.new(10,10)
     Cell::ALL.each do |object|
-      object.world = board
+      object.board = board
     end
     expect(board.grid[9][9].right_edge? && board.grid[9][9].bottom_edge?).to eq(true)
   end
@@ -131,14 +131,14 @@ describe "Cell" do
   it "cells have 8 neighbors unless they lie on the edge" do
     board = Board.new(10,10)
     Cell::ALL.each do |object|
-      object.world = board
+      object.board = board
     end
     expect(board.grid[5][5].get_neighbors.count).to eq(8)
   end
 
   it "a cell at [9,9] will have the following neighbors" do
     board = Board.new(10,10)
-    board.grid[9][9].world = board
+    board.grid[9][9].board = board
     expect(board.grid[9][9].get_neighbors.collect {|object| [object.y, object.x]}).to include([9,8],[8,8],[8,9])
   end
 
@@ -146,7 +146,7 @@ describe "Cell" do
   it "a cell should have 0 live neighbors when board is new" do
     board = Board.new(10,10)
     Cell::ALL.each do |object|
-      object.world = board
+      object.board = board
     end
     expect(board.grid[5][5].get_neighbors.collect {|object| object.state}).should_not include("o")
   end
@@ -155,7 +155,7 @@ describe "Cell" do
   it "should put 3 cells into the to_live array when there is only 1 blinker on the board" do
     board = Board.new(10,10)
     Cell::ALL.each do |object|
-      object.world = board
+      object.board = board
     end
     board.create_blinker(4,4)
     board.evaluate_cells
@@ -163,10 +163,10 @@ describe "Cell" do
     (board.to_die.count).should eq(97)
   end
 
-  it "it should put the right cells into to_live given a world with a toad pattern" do
+  it "it should put the right cells into to_live given a board with a toad pattern" do
     board = Board.new(10,10)
     Cell::ALL.each do |object|
-      object.world = board
+      object.board = board
     end
     board.create_toad(4,4)
     board.evaluate_cells
