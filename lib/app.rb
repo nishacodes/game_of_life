@@ -11,19 +11,21 @@ Cell::ALL.each do |object|
 end
 
 # create initial patterns, specify starting point for each
-board.create_toad(3,49)
-board.create_toad(26,49)
-board.create_toad(15,30)
-board.create_toad(15,70)
-board.create_blinker(5,30)
-board.create_blinker(5,70)
-board.create_blinker(25,30)
-board.create_blinker(25,70)
-board.create_pulsar(7,15)
-board.create_pulsar(7,85)
-board.create_pulsar(15,50)
-board.create_pulsar(22,15)
-board.create_pulsar(22,85)
+# board.create_toad(3,49)
+# board.create_toad(26,49)
+# board.create_toad(15,30)
+# board.create_toad(15,70)
+# board.create_blinker(5,30)
+# board.create_blinker(5,70)
+# board.create_blinker(25,30)
+# board.create_blinker(25,70)
+# board.create_pulsar(7,15)
+# board.create_pulsar(7,85)
+# board.create_pulsar(15,50)
+# board.create_pulsar(22,15)
+# board.create_pulsar(22,85)
+
+board.random(1000)
 board.display
 
 # run the generations and watch the cells change (specify number of generations)

@@ -1,4 +1,12 @@
 module Pattern
+  def random(number)
+    number.times do |i|
+      y = rand(1..29)
+      x = rand(1..99)
+      grid[y][x].tap {|object| object.state = object.alive}
+    end
+  end
+
   def create_blinker(y,x) # starting point coordinates
     blinker = [grid[y][x],grid[y][x-1],grid[y][x+1]]
     blinker.each {|object| object.state = object.alive} 
