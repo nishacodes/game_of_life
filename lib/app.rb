@@ -1,5 +1,6 @@
 require "./board"
 require "./cell"
+require "./pattern"
 
 # specify width and height
 board = Board.new(100,30)

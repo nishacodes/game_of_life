@@ -1,7 +1,8 @@
-require 'debugger'
+require "./pattern"
 
 class Board
   attr_accessor :grid, :width, :height, :to_die, :to_live
+  include Pattern
 
 	def initialize(width, height)
     @width = width
@@ -38,49 +39,49 @@ class Board
     end
   end
 
-  def create_blinker(y,x) # starting point coordinates
-    blinker = [grid[y][x],grid[y][x-1],grid[y][x+1]]
-    blinker.each {|object| object.state = object.alive} 
-  end
+  # def create_blinker(y,x) # starting point coordinates
+  #   blinker = [grid[y][x],grid[y][x-1],grid[y][x+1]]
+  #   blinker.each {|object| object.state = object.alive} 
+  # end
 
-  def create_toad(y,x) # starting point coordinates
-    toad = [grid[y][x],
-            grid[y][x+1],
-            grid[y][x+2],
-            grid[y-1][x+1],
-            grid[y-1][x+2],
-            grid[y-1][x+3]]
-    toad.each {|object| object.state = object.alive}
-  end
+  # def create_toad(y,x) # starting point coordinates
+  #   toad = [grid[y][x],
+  #           grid[y][x+1],
+  #           grid[y][x+2],
+  #           grid[y-1][x+1],
+  #           grid[y-1][x+2],
+  #           grid[y-1][x+3]]
+  #   toad.each {|object| object.state = object.alive}
+  # end
 
-  def create_pulsar(y,x)
-    pulsar = [grid[y-1][x-2], grid[y-1][x+2],
-              grid[y-1][x-3], grid[y-1][x+3],
-              grid[y-1][x-4], grid[y-1][x+4],
-              grid[y-6][x-2], grid[y-6][x+2],
-              grid[y-6][x-3], grid[y-6][x+3],
-              grid[y-6][x-4], grid[y-6][x+4],
-              grid[y+1][x-2], grid[y+1][x+2],
-              grid[y+1][x-3], grid[y+1][x+3],
-              grid[y+1][x-4], grid[y+1][x+4],
-              grid[y+6][x-2], grid[y+6][x+2], 
-              grid[y+6][x-3], grid[y+6][x+3],
-              grid[y+6][x-4], grid[y+6][x+4],
-              grid[y-2][x-1], grid[y-2][x+1],
-              grid[y-3][x-1], grid[y-3][x+1],
-              grid[y-4][x-1], grid[y-4][x+1],
-              grid[y+2][x-1], grid[y+2][x+1],
-              grid[y+3][x-1], grid[y+3][x+1],
-              grid[y+4][x-1], grid[y+4][x+1],
-              grid[y-2][x-6], grid[y-2][x+6],
-              grid[y-3][x-6], grid[y-3][x+6],
-              grid[y-4][x-6], grid[y-4][x+6],
-              grid[y+2][x-6], grid[y+2][x+6],
-              grid[y+3][x-6], grid[y+3][x+6],
-              grid[y+4][x-6], grid[y+4][x+6]
-            ]
-    pulsar.each {|object| object.state = object.alive}
-  end
+  # def create_pulsar(y,x)
+  #   pulsar = [grid[y-1][x-2], grid[y-1][x+2],
+  #             grid[y-1][x-3], grid[y-1][x+3],
+  #             grid[y-1][x-4], grid[y-1][x+4],
+  #             grid[y-6][x-2], grid[y-6][x+2],
+  #             grid[y-6][x-3], grid[y-6][x+3],
+  #             grid[y-6][x-4], grid[y-6][x+4],
+  #             grid[y+1][x-2], grid[y+1][x+2],
+  #             grid[y+1][x-3], grid[y+1][x+3],
+  #             grid[y+1][x-4], grid[y+1][x+4],
+  #             grid[y+6][x-2], grid[y+6][x+2], 
+  #             grid[y+6][x-3], grid[y+6][x+3],
+  #             grid[y+6][x-4], grid[y+6][x+4],
+  #             grid[y-2][x-1], grid[y-2][x+1],
+  #             grid[y-3][x-1], grid[y-3][x+1],
+  #             grid[y-4][x-1], grid[y-4][x+1],
+  #             grid[y+2][x-1], grid[y+2][x+1],
+  #             grid[y+3][x-1], grid[y+3][x+1],
+  #             grid[y+4][x-1], grid[y+4][x+1],
+  #             grid[y-2][x-6], grid[y-2][x+6],
+  #             grid[y-3][x-6], grid[y-3][x+6],
+  #             grid[y-4][x-6], grid[y-4][x+6],
+  #             grid[y+2][x-6], grid[y+2][x+6],
+  #             grid[y+3][x-6], grid[y+3][x+6],
+  #             grid[y+4][x-6], grid[y+4][x+6]
+  #           ]
+  #   pulsar.each {|object| object.state = object.alive}
+  # end
 
   def evaluate_cells
     grid.each do |array|
