@@ -9,7 +9,7 @@ class Cell
   end
 
   def dead
-    return "."
+    return " "
   end
 
   def alive

@@ -1,19 +1,20 @@
-require "./pattern"
+# require "./pattern"
 
 class Board
   attr_accessor :grid, :width, :height, :to_die, :to_live
   include Pattern
 
-	def initialize(width=100, height=30, generations=50)
+	def initialize(width, height, generations, pattern="random")
     @width = width
     @height = height
     @grid = []
     @to_die = []
     @to_live = []
+    @pattern = pattern
     create_empty_board
     assign_coordinates
-    add_random_pattern
-    # add_patterns
+    @pattern == "pattern" ? add_set_pattern : add_random_pattern
+    display
     generation(generations)
 	end
 
@@ -24,6 +25,17 @@ class Board
     grid.each do |array|
       width.times do |i|
         array[i] = Cell.new.tap {|object| object.board = self}
+      end
+    end
+  end
+
+  def assign_coordinates
+    grid.each_with_index do |array, y_index|
+      array.each_with_index do |element, x_index|
+        element.tap do |cell|
+          cell.y = y_index
+          cell.x = x_index
+        end
       end
     end
   end
@@ -48,6 +60,15 @@ class Board
     random(1000)
   end
 
+  def generation(number)
+    number.times do |i|
+      evaluate_cells
+      tick!
+      clear_stage
+      display
+      sleep(0.5)
+    end
+  end
 
   def display
     grid.each do |row|
@@ -56,18 +77,8 @@ class Board
     end
   end
 
-  def assign_coordinates
-    grid.each_with_index do |array, y_index|
-      array.each_with_index do |element, x_index|
-        element.tap do |cell|
-          cell.y = y_index
-          cell.x = x_index
-        end
-      end
-    end
-  end
 
-  def iterate_over_cells
+  def iterate
     grid.each do |array|
       array.each do |object|
         yield object
@@ -76,7 +87,7 @@ class Board
   end
 
   def evaluate_cells
-    iterate_over_cells {|object| object.evaluate_neighbors}
+    iterate {|object| object.evaluate_neighbors}
   end
 
   def tick!
@@ -94,15 +105,7 @@ class Board
     to_live.clear
   end
 
-  def generation(number)
-    number.times do |i|
-      evaluate_cells
-      tick!
-      clear_stage
-      display
-      sleep(0.5)
-    end
-  end
+
 
 end
 
