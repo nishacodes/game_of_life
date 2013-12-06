@@ -2,7 +2,7 @@
 class Cell
   attr_accessor :state, :x, :y, :neighbors, :board
 
-  ALL = [] # only used when assigning each cell to the same instance of Board
+  # ALL = [] # only used when assigning each cell to the same instance of Board
 
   def initialize
     @state = dead
@@ -10,7 +10,7 @@ class Cell
     @y
     @neighbors = []
     @board
-    ALL << self
+    # ALL << self
   end
 
   def dead

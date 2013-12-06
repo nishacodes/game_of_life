@@ -4,22 +4,50 @@ class Board
   attr_accessor :grid, :width, :height, :to_die, :to_live
   include Pattern
 
-	def initialize(width, height)
+	def initialize(width=100, height=30, generations=50)
     @width = width
     @height = height
     @grid = []
+    @to_die = []
+    @to_live = []
+    create_empty_board
+    assign_coordinates
+    add_random_pattern
+    # add_patterns
+    generation(generations)
+	end
+
+  def create_empty_board
     height.times do |i|  # creates an array for each row
       grid << Array.new
     end
     grid.each do |array|
       width.times do |i|
-        array[i] = Cell.new
+        array[i] = Cell.new.tap {|object| object.board = self}
       end
     end
-    assign_coordinates
-    @to_die = []
-    @to_live = []
-	end
+  end
+
+  def add_set_pattern
+    create_toad(3,49)
+    create_toad(26,49)
+    create_toad(15,30)
+    create_toad(15,70)
+    create_blinker(5,30)
+    create_blinker(5,70)
+    create_blinker(25,30)
+    create_blinker(25,70)
+    create_pulsar(7,15)
+    create_pulsar(7,85)
+    create_pulsar(15,50)
+    create_pulsar(22,15)
+    create_pulsar(22,85)
+  end
+
+  def add_random_pattern
+    random(1000)
+  end
+
 
   def display
     grid.each do |row|
@@ -39,59 +67,19 @@ class Board
     end
   end
 
-  # def create_blinker(y,x) # starting point coordinates
-  #   blinker = [grid[y][x],grid[y][x-1],grid[y][x+1]]
-  #   blinker.each {|object| object.state = object.alive} 
-  # end
-
-  # def create_toad(y,x) # starting point coordinates
-  #   toad = [grid[y][x],
-  #           grid[y][x+1],
-  #           grid[y][x+2],
-  #           grid[y-1][x+1],
-  #           grid[y-1][x+2],
-  #           grid[y-1][x+3]]
-  #   toad.each {|object| object.state = object.alive}
-  # end
-
-  # def create_pulsar(y,x)
-  #   pulsar = [grid[y-1][x-2], grid[y-1][x+2],
-  #             grid[y-1][x-3], grid[y-1][x+3],
-  #             grid[y-1][x-4], grid[y-1][x+4],
-  #             grid[y-6][x-2], grid[y-6][x+2],
-  #             grid[y-6][x-3], grid[y-6][x+3],
-  #             grid[y-6][x-4], grid[y-6][x+4],
-  #             grid[y+1][x-2], grid[y+1][x+2],
-  #             grid[y+1][x-3], grid[y+1][x+3],
-  #             grid[y+1][x-4], grid[y+1][x+4],
-  #             grid[y+6][x-2], grid[y+6][x+2], 
-  #             grid[y+6][x-3], grid[y+6][x+3],
-  #             grid[y+6][x-4], grid[y+6][x+4],
-  #             grid[y-2][x-1], grid[y-2][x+1],
-  #             grid[y-3][x-1], grid[y-3][x+1],
-  #             grid[y-4][x-1], grid[y-4][x+1],
-  #             grid[y+2][x-1], grid[y+2][x+1],
-  #             grid[y+3][x-1], grid[y+3][x+1],
-  #             grid[y+4][x-1], grid[y+4][x+1],
-  #             grid[y-2][x-6], grid[y-2][x+6],
-  #             grid[y-3][x-6], grid[y-3][x+6],
-  #             grid[y-4][x-6], grid[y-4][x+6],
-  #             grid[y+2][x-6], grid[y+2][x+6],
-  #             grid[y+3][x-6], grid[y+3][x+6],
-  #             grid[y+4][x-6], grid[y+4][x+6]
-  #           ]
-  #   pulsar.each {|object| object.state = object.alive}
-  # end
-
-  def evaluate_cells
+  def iterate_over_cells
     grid.each do |array|
       array.each do |object|
-        object.evaluate_neighbors
+        yield object
       end
     end
   end
 
-  def tick
+  def evaluate_cells
+    iterate_over_cells {|object| object.evaluate_neighbors}
+  end
+
+  def tick!
     to_die.each do |object|
       object.state = object.dead
     end
@@ -109,7 +97,7 @@ class Board
   def generation(number)
     number.times do |i|
       evaluate_cells
-      tick
+      tick!
       clear_stage
       display
       sleep(0.5)
